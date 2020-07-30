@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 {
 	if (argc != 2)
 	{
-		QString a("cacca");
+		QString a("tettone blu");
 		printf(a.toStdString().c_str());
 		return -1;
 	}
