@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 2.8)
+project( QtTest )
+find_package( OpenCV REQUIRED )
+find_package( Qt5Widgets REQUIRED)
+file(GLOB SOURCES headers/*.h sources/*.cpp)
+add_executable(QtTest ${SOURCES})
+target_link_libraries( QtTest ${OpenCV_LIBS} Qt5::Widgets)
