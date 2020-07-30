@@ -1,30 +1,23 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <qstring.h>
+#include "ImageProcesser.h"
+#include <QApplication>
+#include "MainGUI.h"
 
 using namespace cv;
 
 int main(int argc, char** argv)
 {
-	if (argc != 2)
-	{
-		QString a("cacca puzza");
-		printf(a.toStdString().c_str());
-		return -1;
-	}
+	QApplication app(argc, argv);
+	ImageProcesser* bubu = new ImageProcesser();
 
-	Mat image;
-	image = imread(argv[1], 1);
-
-	if (!image.data)
-	{
-		printf("No image data \n");
-		return -1;
-	}
-	namedWindow("Display Image", WINDOW_AUTOSIZE);
-	imshow("Display Image", image);
-
-	waitKey(0);
-
-	return 0;
+	MainGUI simple_gui{bubu};
+	simple_gui.setWindowTitle("Select and Display Image");
+	simple_gui.show();
+	return app.exec();
+	//ImageProcesser bubi{};
+	//bubi.loadImage("C:\\Users\\Marta\\Documents\\Tutorial_OpenCV_CMake\\testimage.png");
+	//bubi.displayImage();
+	//return 0;
 }
