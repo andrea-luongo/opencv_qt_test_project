@@ -30,7 +30,6 @@ void MainGUI::initializeCentralWidgets()
 	left_widget->setLayout(left_layout);
 	left_widget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-
 	right_widget = new QLabel(central_widget);
 	right_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	right_widget->setMinimumSize(1000, 1000);
