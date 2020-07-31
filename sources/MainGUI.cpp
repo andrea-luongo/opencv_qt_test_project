@@ -1,7 +1,7 @@
 #include "MainGUI.h"
 #include <QVBoxLayout>
 #include <QPushButton>
-
+#include <QPixmap>
 #include <QFileDialog>
 
 MainGUI::MainGUI(ImageProcesser* ip)
@@ -33,20 +33,15 @@ void MainGUI::selectImage()
 	QString fileName = QFileDialog::getOpenFileName(this,
 		tr("Open Image"), "./", tr("Image Files (*.png *.jpg *.bmp)"));
 	image_processer->loadImage(fileName.toStdString());
-	image_viewer->setPixmap(QPixmap::fromImage(mat2qimage(image_processer->getImage())));
+	QImage image;
+	mat2qimage(image_processer->getImage(), image);
+	QPixmap pixmap = QPixmap::fromImage(image);
+	image_viewer->setPixmap(pixmap);
 	image_viewer->show();
 }
 
-QImage MainGUI::mat2qimage(const cv::Mat mat) {
-	//cv::Mat rgb{ mat.rows, mat.cols, mat.type()};
-	cv::Mat rgb;
-	//rgb = mat.clone();
-	cv::cvtColor(mat, rgb, cv::COLOR_BGR2RGB);
-	std::cout << mat.rows<< std::endl;
-	std::cout <<  mat.cols  << std::endl;
-	std::cout <<  mat.step << std::endl;
-	std::cout << mat.type() << std::endl;
-	return QImage((const unsigned char*)(rgb.data), rgb.cols, rgb.rows, rgb.step, QImage::Format_RGB888);
-
-	//return QImage((const unsigned char*)(mat.data), mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
+void MainGUI::mat2qimage(const cv::Mat& opencv_image, QImage& qimage) 
+{
+	qimage = QImage((const unsigned char*)(opencv_image.data), opencv_image.cols, opencv_image.rows, opencv_image.step, QImage::Format_BGR888);
+	qimage.convertToFormat(QImage::Format_RGB888);
 }

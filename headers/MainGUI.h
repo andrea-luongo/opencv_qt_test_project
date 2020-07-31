@@ -12,7 +12,7 @@ public:
 private: 
 	void initializeWidgets();
 	void selectImage();
-	QImage mat2qimage(const cv::Mat mat);
+	void mat2qimage(const cv::Mat& opencv_image, QImage& qimage);
 	QLabel* image_viewer;
 	ImageProcesser* image_processer;
 };
