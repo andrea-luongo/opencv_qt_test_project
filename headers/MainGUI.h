@@ -1,12 +1,13 @@
 #include <QWidget>
+#include <QMainWindow>
 #include "ImageProcesser.h"
 #include <QLabel>
 #include <QImage>
 #pragma once
-class MainGUI : public QWidget
+class MainGUI : public QMainWindow
 {
 public:
-	MainGUI(ImageProcesser* ip);
+	MainGUI(ImageProcesser* ip, QWidget* parent = nullptr);
 	~MainGUI();
 	
 private: 
