@@ -7,7 +7,8 @@
 MainGUI::MainGUI(ImageProcesser* ip)
 {
 	image_processer = ip;
-	initializeWidgets();
+	initializeCentralWidgets();
+	this->setCentralWidget(central_widget);
 }
 
 MainGUI::~MainGUI()
@@ -15,17 +16,29 @@ MainGUI::~MainGUI()
 
 }
 
-void MainGUI::initializeWidgets() 
+void MainGUI::initializeCentralWidgets() 
 {
-	QPushButton* select_image_button = new QPushButton("Select image", this);
+	central_widget = new QWidget(this);
+	//central_widget contains two widget and a horizontal layout: the left widget holds the buttons
+	// the right widget shows the image
+	QWidget* left_widget = new QWidget(central_widget);
+	QPushButton* select_image_button = new QPushButton("Select image", left_widget);
+	select_image_button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	QObject::connect(select_image_button, &QPushButton::clicked, this, &MainGUI::selectImage);
-	image_viewer = new QLabel(this);
+	QVBoxLayout* left_layout = new QVBoxLayout();
+	left_layout->addWidget(select_image_button);
+	left_widget->setLayout(left_layout);
+	left_widget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-	QVBoxLayout* layout = new QVBoxLayout;
-	layout->addWidget(select_image_button);
-	layout->addWidget(image_viewer);
 
-	this->setLayout(layout);
+	right_widget = new QLabel(central_widget);
+	right_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	right_widget->setMinimumSize(1000, 1000);
+
+	QHBoxLayout* central_layout = new QHBoxLayout();
+	central_layout->addWidget(left_widget);
+	central_layout->addWidget(right_widget);
+	central_widget->setLayout(central_layout);
 }
 
 void MainGUI::selectImage() 
@@ -36,8 +49,8 @@ void MainGUI::selectImage()
 	QImage image;
 	mat2qimage(image_processer->getImage(), image);
 	QPixmap pixmap = QPixmap::fromImage(image);
-	image_viewer->setPixmap(pixmap);
-	image_viewer->show();
+	right_widget->setPixmap(pixmap);
+	right_widget->show();
 }
 
 void MainGUI::mat2qimage(const cv::Mat& opencv_image, QImage& qimage) 
